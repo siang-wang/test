@@ -1,0 +1,34 @@
+from twnews.search import NewsSearch
+import datetime
+import time
+
+#today = datetime.date.today().strftime('%Y-%m-%d') #取得今天日期
+#startDay =  (datetime.date.today() - datetime.timedelta(days=30)).strftime('%Y-%m-%d') #取得30天前的日期
+
+file = open('中央社_長庚.csv','w+',encoding='big5') #開啟 txt 檔
+
+nsearch = NewsSearch(
+  'cna',
+  limit=500,
+   
+  beg_date='2019-01-01', # 自由時報的日期範圍只能在 90 天以內
+  end_date='2019-10-31'
+)
+
+nsoups = nsearch.by_keyword('長大', title_only=True).to_soup_list()
+
+for (i, nsoup) in enumerate(nsoups):
+    print('{:03d}: {}'.format(i, nsoup.path))
+    print('標題: {}'.format(nsoup.title()))
+    print('內文: {}'.format(nsoup.contents()))
+    if nsoup.title() is not None:
+        print('     記者: {} / 日期: {}'.format(nsoup.author(), nsoup.date()))
+        #print('     標題: {}'.format(nsoup.title()))
+        #print('     {} ...'.format(nsoup.contents()[0:30]))
+        word = '"記者:{}","日期:{}","標題:{}","內容:{}"\n'.format(nsoup.author(),nsoup.date(),nsoup.title(),nsoup.contents().replace('\n',''))
+        file.write(word.encode('big5','ignore').decode('big5','ignore'))
+        #file.write('"{}","{}","{}","{}"\n'.format(nsoup.author(),nsoup.date(),nsoup.title(),nsoup.contents().replace('\n','')))
+    else:
+        print('     新聞分解失敗，無法識別 DOM 結構')
+
+file.close()
