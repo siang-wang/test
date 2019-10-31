@@ -1,0 +1,42 @@
+import argparse
+from google.cloud import language
+from google.cloud.language import enums
+from google.cloud.language import types
+import os
+from google.oauth2 import service_account
+
+credenimport argparse
+from google.cloud import language
+from google.cloud.language import enums
+from google.cloud.language import types
+import os
+from google.oauth2 import service_account
+
+credentials = service_account.Credentials.from_service_account_file(
+    r'C:\Users\cc888\Desktop\研究所\ra\Project-e6d6b7973fea.json')
+# Instantiates a client
+from google.cloud import language
+def print_result(annotations):
+    score = annotations.document_sentiment.score
+    magnitude = annotations.document_sentiment.magnitude
+
+    for index, sentence in enumerate(annotations.sentences):
+        sentence_sentiment = sentence.sentiment.score
+        print('Sentence {} has a sentiment score of {}'.format(
+            index, sentence_sentiment))
+
+    print('Overall Sentiment: score of {} with magnitude of {}'.format(
+        score, magnitude))
+    return 0
+
+def analyze(): f=int(input(r'C:\Users\cc888\Desktop\研究所\新聞\ETtoday.txt'))
+client = language.LanguageServiceClient(credentials=credentials)  
+"""Run a sentiment analysis request on text within a passed filename."""
+with open(r'C:\Users\cc888\Desktop\研究所\新聞\ETtoday.txt') as f:
+    content = f.read()
+        # Instantiates a plain text document.""" for line in f.readlines():"""
+document = types.Document(content=content,type=enums.Document.Type.PLAIN_TEXT)
+annotations = client.analyze_sentiment(document=document)
+
+    # Print the results
+print_result(annotations)
