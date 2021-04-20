@@ -1,0 +1,37 @@
+import os
+import numpy as np
+import pandas as pd
+
+def num_range_fix(path,out_dir):
+    '''
+    將數據規範到0~1
+    '''
+    if not os.path.exists(out_dir):    #if not os.path.exists(path,out_dir):
+        os.mkdir(out_dir)
+        
+    name    = path.split('.')[0]
+    suffix  = '_output.csv'
+    df      = pd.read_csv(r'C:\Users\USER\Desktop\ap_code(python)\messidor_features.csv', header=None)
+    cols    = df.columns
+    ######################################## 迴圈每個欄位
+    for col in cols:
+        col_values  = df[col]         # 整欄的數值
+        min_        = df[col].min()   # 最小
+        
+        # 如果最小值 < 0, 先減去最小負數, 使之全部 >=0 , 再除以當下的最大值
+        if min_ < 0:
+            df[col] = df[col] - min_
+        max_    = df[col].max()
+         
+        if max_ != 0:
+            df[col] = df[col] / max_ 
+        
+    ### 額外處理最後一欄位
+    label_col = df.columns[-1]
+    df[label_col] = df[label_col].astype(int)
+    out_path  = os.path.join(out_dir, name + suffix)
+    df.to_csv(r'C:\Users\USER\Desktop\ap_code(python)\messidor_features(Normalization).csv', index=False, header=None)
+    
+NAME='Eye lesions.csv'
+out_dir='Normalization'
+num_range_fix(NAME,out_dir)
