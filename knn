@@ -1,15 +1,13 @@
-from sklearn.neighbors import KNeighborsClassifier
-import pandas as pd
+%matplotlib inline
 import numpy as np
 import matplotlib.pyplot as plt
-import time
+import pandas as pd
 
-
-from sklearn import datasets
 from sklearn.model_selection import train_test_split
-from sklearn import metrics
+from sklearn.neighbors import KNeighborsClassifier
 
-from sklearn.model_selection import cross_val_score
+from sklearn.metrics import accuracy_score
+import time
 
 from sklearn.metrics import confusion_matrix
 from sklearn.metrics import accuracy_score
@@ -17,59 +15,245 @@ from sklearn.metrics import precision_score
 from sklearn.metrics import recall_score
 from sklearn.metrics import f1_score
 
-accuracy_scores = []
-precision_scores = []
-recall_scores = []
-f1_scores = []
-socres=[]
+accuracy_scores_sum= 0
+precision_scores_sum= 0
+recall_scores_sum= 0
+f1_scores_sum= 0 
+
+
+sum=0
+
+train = pd.read_csv(r"C:\Users\M0844013\Desktop\UCI Machine Learning Repository\Cryotherapy Dataset Data Set\apple_tra_1.csv")
+test  = pd.read_csv(r"C:\Users\M0844013\Desktop\UCI Machine Learning Repository\Cryotherapy Dataset Data Set\apple_tes_1.csv")
+
+O_X_train = train.values[0:,1:]
+O_y_train = train.values[0:,0]
+test = test.values
 
 
 
-df=pd.read_csv(r'C:\Users\M0844013\Desktop\UCI Machine Learning Repository\Diabetic Retinopathy Debrecen Data Set\messidor_features (Normalization).csv')
+X_train, X_test, y_train, y_test = train_test_split(O_X_train,O_y_train,test_size = 0.2,random_state = 87)
 
 
-qty = df.iloc[:,0].count()
-tn = int(round(qty * 0.8))
-print(tn)   
-    
-X = df.iloc[:tn, [0]] # Will give you columns 2 and 3 i.e 'petal_length' and 'petal_width'
-y = df.iloc[:tn, 1] # Label column i.e 'species'
-
-#X= df.values[0:,1:]
-#y= df.values[0:,0]
-
-
-
-X_train, X_test, y_train, y_test = train_test_split(X, y,test_size=0.2,random_state=87)
-
-
-clf=KNeighborsClassifier(n_neighbors=1,p=2,weights='distance',algorithm='brute')
-clf.fit(X_train,y_train.astype('int'))
-
-
+k_score = []
+test_range = 10000
+for k in range(1, 1 + 1):
+    print("k = {} Training.".format(k))
+    start = time.time()
+    knn = KNeighborsClassifier(n_neighbors = 1)
+    knn.fit(X_train, y_train.astype('int'))
+    predict_result = knn.predict(X_test[:test_range])
+    predict_score = accuracy_score(y_test.astype('int')[:test_range], predict_result)
+    k_score.append(predict_score)
+    end = time.time()
+    sum+=predict_score
+    print("Score: {}.".format(predict_score))
 clf.predict(X_test)
 clf.score(X_test,y_test.astype('int'))
 clf.score(X_train,y_train.astype('int'))
 
 y_pred = clf.predict(X_test)
-accuracy_scores.append(accuracy_score(y_test.astype('int'), y_pred))
 precision_scores.append(precision_score(y_test.astype('int'), y_pred,average='macro'))
 recall_scores.append(recall_score(y_test.astype('int'), y_pred,average='macro'))
 f1_scores.append(f1_score(y_test.astype('int'), y_pred,average='macro'))
 
+print('Precision', np.mean(precision_scores))
+print('Recall', np.mean(recall_scores))
+print('F1-measure', np.mean(f1_scores))
+    
+    
+    
+    #print("Complete time: {} Secs.".format(end - start))
+#print(k_score)
 
-len(X_train)
-for k in range(1, 100):
-    knn = KNeighborsClassifier(n_neighbors=k) 
-knn.fit(X_train.astype('int'), y_train.astype('int'))                 
-y_pred = knn.predict(X_test)              
-accuracy_scores.append(metrics.accuracy_score(y_test.astype('int'), y_pred.astype('int'))) 
+      
+      
+
+train1 = pd.read_csv(r"C:\Users\M0844013\Desktop\UCI Machine Learning Repository\Cryotherapy Dataset Data Set\apple_tra_2.csv")
+test1  = pd.read_csv(r"C:\Users\M0844013\Desktop\UCI Machine Learning Repository\Cryotherapy Dataset Data Set\apple_tes_2.csv")
+
+O_X_train = train1.values[0:,1:]
+O_y_train = train1.values[0:,0]
+test = test1.values
 
 
 
-print('Accuracy', np.mean(accuracy_scores))
+X_train1, X_test1, y_train1, y_test1 = train_test_split(O_X_train,O_y_train,test_size = 0.2,random_state = 87)
+
+
+k_score = []
+test_range = 10000
+for k in range(1, 1 + 1):
+    print("k = {} Training.".format(k))
+    start = time.time()
+    knn = KNeighborsClassifier(n_neighbors = 1)
+    knn.fit(X_train1, y_train1.astype('int'))
+    predict_result = knn.predict(X_test1[:test_range])
+    predict_score = accuracy_score(y_test1.astype('int')[:test_range], predict_result)
+    k_score.append(predict_score)
+    end = time.time()
+    sum+=predict_score
+    print("Score: {}.".format(predict_score))
+ 
+
+clf.predict(X_test1)
+clf.score(X_test1,y_test1.astype('int'))
+clf.score(X_train1,y_train1.astype('int'))
+
+y_pred = clf.predict(X_test1)
+precision_scores.append(precision_score(y_test1.astype('int'), y_pred,average='macro'))
+recall_scores.append(recall_score(y_test1.astype('int'), y_pred,average='macro'))
+f1_scores.append(f1_score(y_test1.astype('int'), y_pred,average='macro'))
+
+print('Precision', np.mean(precision_scores))
+print('Recall', np.mean(recall_scores))
+print('F1-measure', np.mean(f1_scores))
+
+   # print("Complete time: {} Secs.".format(end - start))
+#print(k_score)
+
+
+train2 = pd.read_csv(r"C:\Users\M0844013\Desktop\UCI Machine Learning Repository\Cryotherapy Dataset Data Set\apple_tra_3.csv")
+test2 = pd.read_csv(r"C:\Users\M0844013\Desktop\UCI Machine Learning Repository\Cryotherapy Dataset Data Set\apple_tes_3.csv")
+
+O_X_train = train2.values[0:,1:]
+O_y_train = train2.values[0:,0]
+test = test2.values
+
+
+
+X_train2, X_test2, y_train2, y_test2 = train_test_split(O_X_train,O_y_train,test_size = 0.2,random_state = 87)
+
+
+k_score = []
+test_range = 10000
+for k in range(1, 1 + 1):
+    print("k = {} Training.".format(k))
+    start = time.time()
+    knn = KNeighborsClassifier(n_neighbors = 1)
+    knn.fit(X_train2, y_train2.astype('int'))
+    predict_result = knn.predict(X_test2[:test_range])
+    predict_score = accuracy_score(y_test2.astype('int')[:test_range], predict_result)
+    k_score.append(predict_score)
+    end = time.time()
+    sum+=predict_score
+    print("Score: {}.".format(predict_score))
+    
+clf.predict(X_test2)
+clf.score(X_test2,y_test2.astype('int'))
+clf.score(X_train2,y_train2.astype('int'))
+
+y_pred = clf.predict(X_test2)
+precision_scores.append(precision_score(y_test2.astype('int'), y_pred,average='macro'))
+recall_scores.append(recall_score(y_test2.astype('int'), y_pred,average='macro'))
+f1_scores.append(f1_score(y_test2.astype('int'), y_pred,average='macro'))
+
+print('Precision', np.mean(precision_scores))
+print('Recall', np.mean(recall_scores))
+print('F1-measure', np.mean(f1_scores))
+    
+    
+    
+   # print("Complete time: {} Secs.".format(end - start))
+#print(k_score)
+
+
+train3 = pd.read_csv(r"C:\Users\M0844013\Desktop\UCI Machine Learning Repository\Cryotherapy Dataset Data Set\apple_tra_4.csv")
+test3  = pd.read_csv(r"C:\Users\M0844013\Desktop\UCI Machine Learning Repository\Cryotherapy Dataset Data Set\apple_tes_4.csv")
+
+O_X_train = train3.values[0:,1:]
+O_y_train = train3.values[0:,0]
+test = test3.values
+
+
+
+X_train3, X_test3, y_train3, y_test3 = train_test_split(O_X_train,O_y_train,test_size = 0.2,random_state = 87)
+
+
+k_score = []
+test_range = 10000
+for k in range(1, 1 + 1):
+    print("k = {} Training.".format(k))
+    start = time.time()
+    knn = KNeighborsClassifier(n_neighbors = 1)
+    knn.fit(X_train3, y_train3.astype('int'))
+    predict_result = knn.predict(X_test3[:test_range])
+    predict_score = accuracy_score(y_test3.astype('int')[:test_range], predict_result)
+    k_score.append(predict_score)
+    end = time.time()
+    sum+=predict_score
+    print("Score: {}.".format(predict_score))
+    
+clf=KNeighborsClassifier(n_neighbors=1,p=2,weights='distance',algorithm='brute')
+clf.fit(X_train3,y_train3.astype('int'))
+
+
+clf.predict(X_test3)
+clf.score(X_test3,y_test3.astype('int'))
+clf.score(X_train3,y_train3.astype('int'))
+
+y_pred = clf.predict(X_test3)
+precision_scores.append(precision_score(y_test3.astype('int'), y_pred,average='macro'))
+recall_scores.append(recall_score(y_test3.astype('int'), y_pred,average='macro'))
+f1_scores.append(f1_score(y_test3.astype('int'), y_pred,average='macro'))
+
 print('Precision', np.mean(precision_scores))
 print('Recall', np.mean(recall_scores))
 print('F1-measure', np.mean(f1_scores))
 
 
+
+    
+    
+   # print("Complete time: {} Secs.".format(end - start))
+#print(k_score)
+
+train4 = pd.read_csv(r"C:\Users\M0844013\Desktop\UCI Machine Learning Repository\Cryotherapy Dataset Data Set\apple_tra_5.csv")
+test4  = pd.read_csv(r"C:\Users\M0844013\Desktop\UCI Machine Learning Repository\Cryotherapy Dataset Data Set\apple_tes_5.csv")
+
+O_X_train = train4.values[0:,1:]
+O_y_train = train4.values[0:,0]
+test = test4.values
+
+
+
+X_train4, X_test4, y_train4, y_test4 = train_test_split(O_X_train,O_y_train,test_size = 0.2,random_state = 87)
+
+
+
+k_score = []
+test_range = 10000
+for k in range(1, 1 + 1):
+    print("k = {} Training.".format(k))
+    start = time.time()
+    knn = KNeighborsClassifier(n_neighbors = 1)
+    knn.fit(X_train4, y_train4.astype('int'))
+    predict_result = knn.predict(X_test4[:test_range])
+    predict_score = accuracy_score(y_test4.astype('int')[:test_range], predict_result)
+    k_score.append(predict_score)
+    end = time.time()
+    sum+=predict_score
+    print("Score: {}.".format(predict_score))
+    
+   # print("Complete time: {} Secs.".format(end - start))
+#print(k_score)
+
+clf=KNeighborsClassifier(n_neighbors=1,p=2,weights='distance',algorithm='brute')
+clf.fit(X_train4,y_train4.astype('int'))
+
+
+clf.predict(X_test4)
+clf.score(X_test4,y_test4.astype('int'))
+clf.score(X_train4,y_train4.astype('int'))
+
+y_pred = clf.predict(X_test4)
+precision_scores.append(precision_score(y_test4.astype('int'), y_pred,average='macro'))
+recall_scores.append(recall_score(y_test4.astype('int'), y_pred,average='macro'))
+f1_scores.append(f1_score(y_test4.astype('int'), y_pred,average='macro'))
+
+print('Precision', np.mean(precision_scores))
+print('Recall', np.mean(recall_scores))
+print('F1-measure', np.mean(f1_scores))
+
+print(sum/5)
+print(precision_scores_sum/5)
