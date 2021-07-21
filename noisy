@@ -1,0 +1,20 @@
+import pandas as pd
+import csv
+import numpy as np
+
+list=[]
+
+dt=pd.read_csv(r'C:\Users\M0844013\Desktop\UCI Machine Learning Repository - drop3\Statlog (Heart) Data Set\noisy.csv',header=None)
+#list=dt.values.tolist()
+#list = ','.join((str(i)) for i in list)
+
+print(dt)
+
+
+
+    
+data = pd.read_csv(r"C:\Users\M0844013\Desktop\UCI Machine Learning Repository - drop3\Statlog (Heart) Data Set\Statlog (Heart)1(Normalization).csv",skiprows=dt,header=None)
+print(data)
+
+
+data.to_csv(r'C:\Users\M0844013\Desktop\UCI Machine Learning Repository - drop3\Statlog (Heart) Data Set\Statlog (Heart)1(Normalization)(drop3).csv', index=False,header=None)
