@@ -1,0 +1,24 @@
+import numpy as np
+import pandas as pd 
+
+my_matrixa = numpy.loadtxt(open(r'C:\Users\M0844013\Desktop\聯集\Statlog (Heart) Data Set(drop3)(ib3)t)1(Normalization)(drop3)noisy.csv',"rb"),delimiter=",") 
+
+my_matrixb = numpy.loadtxt(open(r"C:\Users\M0844013\Desktop\聯集\Statlog (Heart) Data Set(drop3)(ib3)\Statlog (Heart)1(Normalization)(ib3)noisy.csv","rb"),delimiter=",") 
+
+
+dt = np.array(list(set(my_matrixa).union(my_matrixb)))
+print(dt)
+
+
+data=pd.DataFrame(columns=[dt])
+
+print(data)
+
+data.to_csv(r'C:\Users\M0844013\Desktop\聯集\Statlog (Heart) Data Set(drop3)(ib3)\Statlog (Heart)1(Normalization)(drop3)(ib3)noisy.csv')
+
+
+
+
+
+
+
