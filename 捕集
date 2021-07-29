@@ -1,0 +1,37 @@
+import numpy 
+import pandas as pd 
+
+my_matrixa = numpy.loadtxt(open(r'C:\Users\M0844013\Desktop\補集\Statlog (Heart) Data Set(drop3)(ib3)\Statlog (Heart)1(Normalization)(drop3)noisy.csv',"rb"),delimiter=",",skiprows=0) 
+
+my_matrixb = numpy.loadtxt(open(r"C:\Users\M0844013\Desktop\補集\Statlog (Heart) Data Set(drop3)(ib3)\Statlog (Heart)1(Normalization)(ib3)noisy.csv","rb"),delimiter=",",skiprows=0) 
+
+
+dt1 = np.array(list(set(my_matrixa) - set(my_matrixb)))
+dt2 = np.array(list(set(my_matrixb) - set(my_matrixa)))
+
+dt3 = np.hstack((dt1,dt2))
+
+print(dt3)
+
+print(dt1)
+print(dt2)
+
+data1=pd.DataFrame(dt1)
+data2=pd.DataFrame(dt2)
+
+data3=pd.DataFrame(columns=dt3)
+
+
+#print(dt3)
+#print(data1)
+#print(data2)
+
+data3.to_csv(r'C:\Users\M0844013\Desktop\補集\Statlog (Heart) Data Set(drop3)(ib3)\Statlog (Heart)1(Normalization)(drop3)(ib3).csv')
+#data2.to_csv(r'C:\Users\M0844013\Desktop\交集\Cryotherapy Dataset Data Set(drop3)(ib3)\test1noisy.csv')
+
+    
+
+
+
+
+
